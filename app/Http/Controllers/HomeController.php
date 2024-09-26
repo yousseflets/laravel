@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Vendas;
 use Illuminate\Http\Request;
 use App\Models\Produtos;
 use App\Models\Fornecedores;
 use App\Models\Categorias;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -28,7 +30,10 @@ class HomeController extends Controller
     {
         $totalProdutos = Produtos::count();
         $totalFornecedores = Fornecedores::count();
+        $totalVendas = Vendas::count();
+        $dataHoje = Carbon::now()->format('Y-m-d H:i:s');
 
-        return view('home', compact('totalProdutos','totalFornecedores'));
+
+        return view('home', compact('totalProdutos','totalFornecedores', 'totalVendas','dataHoje'));
     }
 }

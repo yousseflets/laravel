@@ -22,6 +22,7 @@ class Fornecedores extends Model
         'cidade',
         'uf',
         'telefone',
-        'celular'
+        'celular',
+        'status'
     ];
 }

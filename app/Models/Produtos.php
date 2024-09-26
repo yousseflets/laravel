@@ -18,7 +18,8 @@ class Produtos extends Model
         'nome',
         'descricao',
         'preco',
-        'qtd_estoque'
+        'qtd_estoque',
+        'status'
     ];
 
     public function Fornecedor()

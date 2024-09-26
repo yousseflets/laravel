@@ -30,6 +30,8 @@
         "@fortawesome/free-regular-svg-icons": "^6.6.0",
         "@fortawesome/free-solid-svg-icons": "^6.6.0",
         "bootstrap-icons": "^1.11.3",
-        "datatables.net-dt": "^2.1.6"
+        "datatables.net-dt": "^2.1.6",
+        "jquery": "^3.7.1",
+        "jquery-mask-plugin": "^1.14.16"
     }
 }

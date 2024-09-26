@@ -82,4 +82,34 @@
         </form>
     </section>
 @endsection
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
+<script>
+    $(document).ready(function(){
+        $('#cep').mask('00000-000');
+    });
+    $(document).ready(function() {
+        $('#cep').on('blur', function() {
+            var cep = $(this).val().replace(/\D/g, ''); // Remove tudo que não for número
+
+            if (cep.length === 8) {
+                $.ajax({
+                    url: '/cep/' + cep,
+                    method: 'GET',
+                    success: function(data) {
+                        if (!data.error) {
+                            $('#logradouro').val(data.logradouro);
+                            $('#bairro').val(data.bairro);
+                            $('#cidade').val(data.localidade);
+                            $('#uf').val(data.uf);
+                        }
+                    },
+                    error: function() {
+                        alert('CEP não encontrado ou inválido.');
+                    }
+                });
+            }
+        });
+    });
+</script>

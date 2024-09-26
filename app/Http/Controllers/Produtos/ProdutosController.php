@@ -78,4 +78,10 @@ class ProdutosController extends Controller
 
       return redirect()->route('produtos.index')->with('success', 'Produto inativado com sucesso.');
     }
+
+    public function getPreco($id)
+    {
+        $produto = Produtos::find($id);
+        return response()->json(['preco' => $produto->preco]);
+    }
 }

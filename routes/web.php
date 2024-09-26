@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/cep/{cep}', [App\Http\Controllers\Cep\CepController::class, 'buscarCep']);
+
 Route::get('/fornecedores', [App\Http\Controllers\Fornecedores\FornecedoresController::class, 'index'])->name('fornecedores.index');
 Route::get('/fornecedores/cadastro', [App\Http\Controllers\Fornecedores\FornecedoresController::class, 'create'])->name('fornecedores.create');
 Route::post('/fornecedores/cadastro', [App\Http\Controllers\Fornecedores\FornecedoresController::class, 'store'])->name('fornecedores.store');
@@ -34,3 +37,9 @@ Route::post('/produtos/cadastro', [App\Http\Controllers\Produtos\ProdutosControl
 Route::get('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'edit'])->name('produtos.edit');
 Route::post('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'update'])->name('produtos.update');
 Route::get('/produtos/deletar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'delete'])->name('produtos.delete');
+Route::get('/produtos/preco/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'getPreco']);
+
+
+Route::get('/vendas', [App\Http\Controllers\Vendas\VendasController::class, 'index'])->name('vendas.index');
+Route::get('/vendas/cadastro', [App\Http\Controllers\Vendas\VendasController::class, 'create'])->name('vendas.create');
+Route::post('/vendas/cadastro', [App\Http\Controllers\Vendas\VendasController::class, 'store'])->name('vendas.store');

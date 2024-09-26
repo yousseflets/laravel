@@ -295,9 +295,9 @@ return [
 
     'menu' => [
         [
-            'text' => 'Clientes',
-            'url' => 'admin/settings',
-            'icon' => 'fa fa-users ',
+            'text' => 'Home',
+            'url' => '/home',
+            'icon' => 'fa fa-home',
         ],
 
         [
@@ -312,7 +312,7 @@ return [
         ],
         [
             'text' => 'Vendas',
-            'url' => 'admin/settings',
+            'url' => '/vendas',
             'icon' => 'fa fa-shopping-cart',
         ],
     ],
