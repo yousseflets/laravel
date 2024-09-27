@@ -17,7 +17,7 @@
 @section('content')
     <div class="col-lg-12" style="text-align: right;">
         <a href="{{ route('fornecedores.create') }}" class="btn btn-md btn-primary">
-            Cadastrar
+            Cadastrar Fornecedor
         </a>
     </div>
 
@@ -34,8 +34,8 @@
                         <th>Ações</th>
                     </tr>
                 </thead>
-                @foreach ($fornecedores as $f)
-                    <tbody style="background-color: {{$f->status == 1 ? 'lightgreen' : 'indianred' }}; color: {{$f->status == 1 ? 'black' : 'white' }} ">
+                @forelse ($fornecedores as $f)
+                    <tr style="background-color: {{$f->status == 1 ? 'lightgreen' : 'indianred' }}; color: {{$f->status == 1 ? 'black' : 'white' }} ">
                         <td>{{ $f->id }}</td>
                         <td>{{ $f->razao_social }}</td>
                         <td>{{ $f->nome_fantasia }}</td>
@@ -55,8 +55,12 @@
                                 </a>
                             @endif
                         </td>
-                    </tbody>
-                @endforeach
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" style="text-transform: uppercase; text-align: center;">Nenhum fornecedor encontrado.</td>
+                    </tr>
+                @endforelse
             </table>
         </div>
     </section>

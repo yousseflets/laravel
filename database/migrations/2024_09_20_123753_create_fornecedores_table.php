@@ -23,7 +23,7 @@ class CreateFornecedoresTable extends Migration
             $table->string('cep', 8);
             $table->string('logradouro', 120);
             $table->string('numero', 120);
-            $table->string('complemento', 60);
+            $table->string('complemento', 60)->nullable();
             $table->string('bairro', 60);
             $table->string('cidade', 60);
             $table->string('uf', 2);

@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-9 mt-2">
                         <label for="complemento">Complemento</label>
-                        <input type="text" class="form-control" id="complemento" name="complemento" required>
+                        <input type="text" class="form-control" id="complemento" name="complemento">
                     </div>
                     <div class="col-5 mt-2">
                         <label for="bairro">Bairro</label>

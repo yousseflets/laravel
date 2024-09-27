@@ -32,6 +32,7 @@ Route::post('/fornecedores/editar/{id}', [App\Http\Controllers\Fornecedores\Forn
 Route::get('/fornecedores/deletar/{id}', [App\Http\Controllers\Fornecedores\FornecedoresController::class, 'delete'])->name('fornecedores.delete');
 
 Route::get('/produtos', [App\Http\Controllers\Produtos\ProdutosController::class, 'index'])->name('produtos.index');
+Route::get('/produtos/data', [App\Http\Controllers\Produtos\ProdutosController::class, 'getData'])->name('produtos.data');
 Route::get('/produtos/cadastro', [App\Http\Controllers\Produtos\ProdutosController::class, 'create'])->name('produtos.create');
 Route::post('/produtos/cadastro', [App\Http\Controllers\Produtos\ProdutosController::class, 'store'])->name('produtos.store');
 Route::get('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'edit'])->name('produtos.edit');
@@ -43,3 +44,7 @@ Route::get('/produtos/preco/{id}', [App\Http\Controllers\Produtos\ProdutosContro
 Route::get('/vendas', [App\Http\Controllers\Vendas\VendasController::class, 'index'])->name('vendas.index');
 Route::get('/vendas/cadastro', [App\Http\Controllers\Vendas\VendasController::class, 'create'])->name('vendas.create');
 Route::post('/vendas/cadastro', [App\Http\Controllers\Vendas\VendasController::class, 'store'])->name('vendas.store');
+Route::get('/vendas/deletar/{id}', [App\Http\Controllers\Vendas\VendasController::class, 'delete'])->name('vendas.delete');
+
+
+Route::get('/historico', [App\Http\Controllers\Historico\HistoricoController::class, 'index'])->name('historico.index');

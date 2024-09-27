@@ -27,6 +27,10 @@
                         <p><span id="preco" class="form-control" readonly>R$ 0,00</span></p>
                     </div>
                     <div class="col-4">
+                        <label for="desconto">Desconto (%)</label>
+                        <input type="text" class="form-control" id="desconto" name="desconto">
+                    </div>
+                    <div class="col-4">
                         <label for="quantidade">Quantidade</label>
                         <input type="text" class="form-control" id="quantidade" name="quantidade" required>
                     </div>

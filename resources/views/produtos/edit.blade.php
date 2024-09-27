@@ -1,12 +1,12 @@
+
 @extends('adminlte::page')
 
 @section('title', 'Fornecedores - Editar')
 
-
 @section('content')
 <br/>
     <section class="content">
-        <form class=" col-12 " action="{{ route('produtos.update', $produtos->id) }}" method="post">
+        <form class=" col-12 " action="{{ route('produtos.update', $produtos->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="card-body col-12" style=" border-style: 2px, solid; border-radius: 5px;box-shadow: 10px 10px 16px 10px rgb(175, 175, 175);">
                 <div class="row">
@@ -14,7 +14,7 @@
                         <label for="nome">Nome</label>
                         <input type="text" class="form-control" id="nome" name="nome" value="{{ $produtos->nome }}">
                     </div>
-                    <div class="col-3">
+                    <div class="col-6">
                         <label for="fornecedor_id">Fornecedor</label>
                         <select id="fornecedor_id" name="fornecedor_id" class="form-control custom-select">
                             <option selected="" disabled="">Selecione</option>
@@ -23,7 +23,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-3">
+                    <div class="col-6">
                         <label for="categoria_id">Categoria</label>
                         <select id="categoria_id" name="categoria_id" class="form-control custom-select">
                             <option selected="" disabled="">Selecione</option>
@@ -32,17 +32,24 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4 mt-2">
+                        <label for="preco_custo">Valor Custo</label>
+                        <input type="text" class="form-control" id="preco_custo" name="preco_custo" value="{{ $produtos->preco_custo }}" required>
+                    </div>
+                    <div class="col-4 mt-2">
                         <label for="preco">Preço</label>
                         <input type="text" class="form-control" id="preco" name="preco" value="{{ $produtos->preco }}" required>
                     </div>
-                    <div class="col-3">
+                    <div class="col-4 mt-2">
                         <label for="qtd_estoque">Quantidade em Estoque</label>
                         <input type="text" class="form-control" id="qtd_estoque" name="qtd_estoque" value="{{ $produtos->qtd_estoque }}" required>
                     </div>
-                    <div class="col-12 mt-2">
-                        <label for="descricao">Descrição</label>
-                        <textarea id="descricao" name="descricao" class="form-control" value="{{ $produtos->descricao }}"  rows="4">{{ $produtos->descricao }}</textarea>
+                    <div class="col-6 mt-3">
+                        <input type="file" name="image" id="image" onchange="previewImage(event)">
+                    </div>
+
+                    <div class="col-4 mt-2">
+                        <img id="preview" src="" alt="Pré-visualização da Imagem" style="max-width: 300px; display: none;">
                     </div>
                 </div>
 
@@ -56,4 +63,25 @@
         </form>
     </section>
 @endsection
+<script>
+    function previewImage(event) {
+        const input = event.target; // O input do tipo file
+        const preview = document.getElementById('preview'); // O elemento <img> para pré-visualização
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            // Define a função que será chamada quando o FileReader terminar de carregar o arquivo
+            reader.onload = function(e) {
+                preview.src = e.target.result; // Define a src da imagem para o resultado do FileReader
+                preview.style.display = 'block'; // Exibe a imagem (caso esteja escondida)
+            }
+
+            reader.readAsDataURL(input.files[0]); // Carrega a imagem selecionada
+        } else {
+            preview.src = ''; // Se não houver arquivo, remove a src
+            preview.style.display = 'none'; // Esconde a imagem
+        }
+    }
+</script>
 

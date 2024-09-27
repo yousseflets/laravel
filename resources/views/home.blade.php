@@ -22,11 +22,20 @@
     }
     .inner {
         font-size: 15px;
-        font-family: "Lucida Console", "Courier New", monospace;
+        font-family:"Poppins", sans-serif;
         text-align: center;
         justify-content: center;
         color: white;
     }
+    .titulo_card{
+        font-size: 15px;
+        font-family:"Poppins", sans-serif;
+        text-align: center;
+        justify-content: center;
+        color: white;
+        text-transform: uppercase;
+    }
+
 </style>
 @section('content_header')
     <h2 class="mensagemBoasVindas">Seja bem vindo ao sistema de <br><b>Registro de vendas</b></h2>
@@ -37,54 +46,53 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-green">
+
+        <div class="col-lg-6 col-6">
+            <div class="small-box bg-indigo">
+                <a href="/vendas/cadastro" class="small-box-footer"><h3 style="text-transform: uppercase;">Registrar Vendas <i class="fa fa-plus"></i></h3></a>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-6">
+            <div class="small-box bg-cyan">
+                <a href="/historico" class="small-box-footer"><h3 style="text-transform: uppercase;"> Histórico  <i class="fas fa-arrow-circle-right"></i></h3></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-8">
+            <div class="small-box bg-gradient-lightblue">
                 <div class="inner">
-                    <h3>{{ $totalVendas }}</sup></h3>
-                    <p>Vendas</p>
+                    <h3>{{ $totalVendasUnidades }}</sup></h3>
+                    <p class="titulo_card">Quantidade de produtos vendido</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="/vendas" class="small-box-footer">Acesse <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-6">
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($totalVendasValor,2) }}</h3>
+                    <p class="titulo_card">Valor total de vendas</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
             </div>
         </div>
 
         <div class="col-lg-4 col-6">
             <div class="small-box bg-blue">
                 <div class="inner">
-                    <h3>{{ $totalFornecedores }}</h3>
-                    <p>Fornecedores</p>
+                    <h3> {{ $totalProdutosEstoque }}</h3>
+                    <p class="titulo_card">Estoque Atual</p>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="/fornecedores" class="small-box-footer">Acesse <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
 
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-maroon">
-                <div class="inner">
-                    <h3>{{ $totalProdutos }}</h3>
-                    <p>Produtos</p>
-                </div>
-                <a href="/produtos" class="small-box-footer">Acesse <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
 
-        {{-- <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>65</h3>
-                    <p>Pensar em o q por aqui</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div> --}}
     </div>
 </section>
 

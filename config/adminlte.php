@@ -308,12 +308,17 @@ return [
         [
             'text' => 'Produtos',
             'url' => '/produtos',
-            'icon' => 'fa fa-cart-plus',
+            'icon' => 'fa fa-archive',
         ],
         [
             'text' => 'Vendas',
             'url' => '/vendas',
             'icon' => 'fa fa-shopping-cart',
+        ],
+        [
+            'text' => 'Historico',
+            'url' => '/historico',
+            'icon' => 'fa fa-list-ul',
         ],
     ],
 

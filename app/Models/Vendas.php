@@ -16,11 +16,27 @@ class Vendas extends Model
         'quantidade',
         'total',
         'data_venda',
+        'desconto',
         'status'
     ];
 
     public function Produto()
     {
         return $this->belongsTo(Produtos::class, 'produto_id', 'id');
+    }
+    public function Historico()
+    {
+        return $this->hasMany(Historico::class, 'id', 'venda_id');
+    }
+
+    public function vendaCancelada()
+    {
+        if ($this->status !== 0) {
+            foreach ($this->products as $product) {
+                $product->updateEstoque($product->pivot->quantity);
+            }
+            $this->status = 0;
+            $this->save();
+        }
     }
 }

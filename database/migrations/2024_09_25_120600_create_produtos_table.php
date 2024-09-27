@@ -18,9 +18,10 @@ class CreateProdutosTable extends Migration
             $table->unsignedInteger('fornecedor_id')->index();
             $table->unsignedInteger('categoria_id')->index();
             $table->string('nome');
-            $table->string('descricao');
             $table->string('qtd_estoque');
             $table->double('preco', 12,5);
+            $table->double('preco_custo', 12,5);
+            $table->string('image')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
 

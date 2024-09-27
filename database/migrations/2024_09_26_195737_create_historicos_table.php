@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVendasTable extends Migration
+class CreateHistoricosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,16 @@ class CreateVendasTable extends Migration
      */
     public function up()
     {
-        Schema::create('vendas', function (Blueprint $table) {
+        Schema::create('historicos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('produto_id')->index();
-            $table->integer('quantidade');
-            $table->double('total', 10, 2);
-            $table->decimal('discount', 5, 2)->default(0);
-            $table->boolean('status')->default(1);
-            $table->dateTime('data_venda');
+            $table->unsignedInteger('venda_id')->index();
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('produto_id')->references('id')->on('produtos')->onDelete('cascade');
+            $table->foreign('venda_id')->references('id')->on('vendas')->onDelete('cascade');
         });
     }
 
@@ -34,6 +33,6 @@ class CreateVendasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vendas');
+        Schema::dropIfExists('historicos');
     }
 }

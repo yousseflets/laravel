@@ -16,9 +16,10 @@ class Produtos extends Model
         'fornecedor_id',
         'categoria_id',
         'nome',
-        'descricao',
         'preco',
         'qtd_estoque',
+        'preco_custo',
+        'image',
         'status'
     ];
 

@@ -7,6 +7,7 @@ use App\Models\Produtos;
 use App\Models\Fornecedores;
 use App\Models\Categorias;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProdutosController extends Controller
 {
@@ -17,7 +18,7 @@ class ProdutosController extends Controller
 
     public function index()
     {
-        $produtos = Produtos::all();
+        $produtos = Produtos::paginate(5);
         $fornecedores = Fornecedores::all();
         $categorias = Categorias::all();
 
@@ -34,16 +35,24 @@ class ProdutosController extends Controller
     }
 
     public function store (Request $request){
-        // dd($request->all());
 
-        $novoProduto = Produtos::create([
-            'fornecedor_id' => $request->fornecedor_id,
-            'categoria_id' => $request->categoria_id,
-            'nome' => $request->nome,
-            'descricao' => $request->descricao,
-            'preco' => $request->preco,
-            'qtd_estoque' => $request->qtd_estoque,
-        ]);
+        $imagePath = null;
+        // dd($request->hasFile('image'));
+        if ($request->hasFile('image')) {
+            // Pega o arquivo e armazena na pasta 'products'
+            $imagePath = $request->file('image')->store('produtos', 'public');
+            Produtos::create([
+                'fornecedor_id' => $request->fornecedor_id,
+                'categoria_id' => $request->categoria_id,
+                'nome' => $request->nome,
+                'preco' => $request->preco,
+                'preco_custo' => $request->preco_custo,
+                'image' => $imagePath,
+                'qtd_estoque' => $request->qtd_estoque,
+            ]);
+        }
+
+
 
         return redirect()->route('produtos.index')->with('success','Produto criado com sucesso!!');
     }
@@ -63,6 +72,28 @@ class ProdutosController extends Controller
       $produtos = Produtos::find($id);
       $produtos->fill($request->all());
       $produtos->save();
+
+      if ($request->hasFile('image')) {
+        if ($produtos->image) {
+            Storage::delete('public/produtos/' . $produtos->image);
+        }
+
+        $imagePath = $request->file('image')->store('produtos', 'public');
+
+        $produtos->image = $imagePath;
+    }
+
+    // Atualizar os outros campos
+    $produtos->fornecedor_id = $request->input('fornecedor_id');
+    $produtos->categoria_id = $request->input('categoria_id');
+    $produtos->nome = $request->input('nome');
+    $produtos->preco = $request->input('preco');
+    $produtos->preco_custo = $request->input('preco_custo');
+    $produtos->qtd_estoque = $request->input('qtd_estoque');
+
+    // Salvar as mudanças no banco de dados
+    $produtos->save();
+
 
       return redirect()->route('produtos.index')->with('success', 'Produto editado com sucesso.');
     }
