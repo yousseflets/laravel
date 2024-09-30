@@ -1,21 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Produtos')
-<style>
-    .mensagemBoasVindas {
-        font-size: 26px;
-        font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    }
-</style>
-@section('content_header')
-<div class="container">
 
-    <section class="content">
-        <h2 class="mensagemBoasVindas">Produtos</b></h2>
-
-    </section>
-</div>
-@stop
 
 @section('content')
 
@@ -34,6 +20,7 @@
                         <th>Nome do Produto</th>
                         <th>Fornecedor</th>
                         <th>Categoria</th>
+                        <th>Preço Custo</th>
                         <th>Preço</th>
                         <th>Quantidade em Estoque</th>
                         <th>Status</th>
@@ -52,6 +39,7 @@
                         <td class="centralizado">{{ $p->nome }}</td>
                         <td>{{ $p->fornecedor->razao_social }}</td>
                         <td>{{ $p->categoria->nome }}</td>
+                        <td>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($p->preco_custo,  2) }}</td>
                         <td>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($p->preco,  2) }}</td>
                         <td> {{ $p->qtd_estoque }} unidades</td>
                         <td>{{ $p->status == 1 ? 'Ativo' : 'Inativo' }}</td>
@@ -77,10 +65,23 @@
                 @endforelse
             </table>
             <br>
-            <div class="d-flex justify-content-end">
-                {{ $produtos->links('vendor.pagination.bootstrap-4') }}
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <p>Mostrando {{$produtos->count() }} de um total de {{ $produtos->total() }}.</p>
+                </div>
+                <div class="col-sm-6 d-flex justify-content-end">
+                    {{ $produtos->links('vendor.pagination.bootstrap-4') }}
+                </div>
             </div>
+
         </div>
+        {{-- <div class="content-header">
+            <div class="container-fluid"> --}}
+
+            {{-- </div>
+            </div> --}}
+
+
 
     </section>
 @stop

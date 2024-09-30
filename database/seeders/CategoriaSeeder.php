@@ -20,7 +20,7 @@ class CategoriaSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        
+
         Categorias::create([
             'nome'=> "Alumínio",
             'descricao' => "Alumínio",
@@ -38,6 +38,13 @@ class CategoriaSeeder extends Seeder
         Categorias::create([
             'nome'=> "Essências",
             'descricao' => "Essências",
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        Categorias::create([
+            'nome'=> "Fogareiros",
+            'descricao' => "Fogareiros",
             'created_at' => now(),
             'updated_at' => now(),
         ]);

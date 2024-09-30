@@ -15,7 +15,7 @@ class FornecedoresController extends Controller
 
     public function index()
     {
-        $fornecedores = Fornecedores::all();
+        $fornecedores = Fornecedores::paginate(10);
 
         return view('fornecedores.index', compact('fornecedores'));
     }

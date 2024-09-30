@@ -1,28 +1,17 @@
 @extends('adminlte::page')
 
 @section('title', 'Fornecedores')
-<style>
-    .mensagemBoasVindas {
-        font-size: 20px;
-        font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    }
-</style>
-@section('content_header')
-    <section class="content">
-        <h2 class="mensagemBoasVindas">Fornecedores</b></h2>
 
-    </section>
-@stop
 
 @section('content')
-    <div class="col-lg-12" style="text-align: right;">
-        <a href="{{ route('fornecedores.create') }}" class="btn btn-md btn-primary">
-            Cadastrar Fornecedor
-        </a>
-    </div>
-
     <section class="content">
         <div class="card-body" >
+            <div class="col-lg-12" style="text-align: right;">
+                <a href="{{ route('fornecedores.create') }}" class="btn btn-md btn-primary">
+                    Cadastrar Fornecedor
+                </a>
+            </div>
+            <br>
             <table class="table table-bordered table-hover" style="background-color: #fff;">
                 <thead>
                     <tr>
@@ -62,6 +51,16 @@
                     </tr>
                 @endforelse
             </table>
+
+            <br>
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <p>Mostrando {{$fornecedores->count() }} de um total de {{ $fornecedores->total() }}.</p>
+                </div>
+                <div class="col-sm-6 d-flex justify-content-end">
+                    {{ $fornecedores->links('vendor.pagination.bootstrap-4') }}
+                </div>
+            </div>
         </div>
     </section>
 @stop

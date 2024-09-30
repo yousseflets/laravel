@@ -13,10 +13,12 @@ class Vendas extends Model
     protected $fillable = [
         'id',
         'produto_id',
+        'user_id',
         'quantidade',
         'total',
         'data_venda',
         'desconto',
+        'lucro_venda',
         'status'
     ];
 
@@ -24,19 +26,11 @@ class Vendas extends Model
     {
         return $this->belongsTo(Produtos::class, 'produto_id', 'id');
     }
-    public function Historico()
+
+    public function User()
     {
-        return $this->hasMany(Historico::class, 'id', 'venda_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function vendaCancelada()
-    {
-        if ($this->status !== 0) {
-            foreach ($this->products as $product) {
-                $product->updateEstoque($product->pivot->quantity);
-            }
-            $this->status = 0;
-            $this->save();
-        }
-    }
+
 }

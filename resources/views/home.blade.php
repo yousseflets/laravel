@@ -21,7 +21,7 @@
         justify-content: center;
     }
     .inner {
-        font-size: 15px;
+        /* font-size: 45px; */
         font-family:"Poppins", sans-serif;
         text-align: center;
         justify-content: center;
@@ -38,7 +38,7 @@
 
 </style>
 @section('content_header')
-    <h2 class="mensagemBoasVindas">Seja bem vindo ao sistema de <br><b>Registro de vendas</b></h2>
+    <h2 class="mensagemBoasVindas"><b>Registro de vendas</b></h2>
     <h4 class="data">{{ \App\Helpers\DataHelper::showDateTime($dataHoje) }}</h4>
 @stop
 
@@ -46,24 +46,25 @@
 
 <section class="content">
     <div class="row">
-
-        <div class="col-lg-6 col-6">
+        <div class="col-lg-3 col-8"></div>
+        <div class="col-lg-3 col-8"></div>
+        <div class="col-lg-3 col-8"></div>
+        <div class="col-lg-3 col-6 justify-content-end">
             <div class="small-box bg-indigo">
-                <a href="/vendas/cadastro" class="small-box-footer"><h3 style="text-transform: uppercase;">Registrar Vendas <i class="fa fa-plus"></i></h3></a>
+                <a href="/vendas/cadastro" class="small-box-footer">
+                    <h4 style="text-transform: uppercase;">
+                        Registrar Vendas &nbsp;<i class="fa fa-cart-plus"></i>
+                    </h4>
+                </a>
             </div>
         </div>
 
-        <div class="col-lg-6 col-6">
-            <div class="small-box bg-cyan">
-                <a href="/historico" class="small-box-footer"><h3 style="text-transform: uppercase;"> Histórico  <i class="fas fa-arrow-circle-right"></i></h3></a>
-            </div>
-        </div>
 
-        <div class="col-lg-4 col-8">
-            <div class="small-box bg-gradient-lightblue">
+        <div class="col-lg-3 col-8">
+            <div class="small-box bg-gradient-lightblue ">
                 <div class="inner">
                     <h3>{{ $totalVendasUnidades }}</sup></h3>
-                    <p class="titulo_card">Quantidade de produtos vendido</p>
+                    <p class="titulo_card">Produtos vendidos</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
@@ -71,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-6">
+        <div class="col-lg-3 col-6">
             <div class="small-box bg-green">
                 <div class="inner">
                     <h3>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($totalVendasValor,2) }}</h3>
@@ -83,7 +84,7 @@
             </div>
         </div>
 
-        <div class="col-lg-4 col-6">
+        <div class="col-lg-3 col-6">
             <div class="small-box bg-blue">
                 <div class="inner">
                     <h3> {{ $totalProdutosEstoque }}</h3>
@@ -93,13 +94,28 @@
         </div>
 
 
+        <div class="col-lg-3 col-12">
+            <div class="small-box bg-orange">
+                <div class="inner">
+                    <h3 class="totalLucro">R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($totalLucro,2) }}</h3>
+                    <p class="titulo_card">Lucro até {{ \App\Helpers\DataHelper::showDateTime($dataHoje) }} </p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 50%; margin: auto;">
+            <canvas  id="graficoPizza"></canvas>
+        </div>
     </div>
 </section>
 
 
 
-
 @stop
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @section('css')
     {{-- Add here extra stylesheets --}}
@@ -107,5 +123,40 @@
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+<script>
+    var ctx = document.getElementById('graficoPizza').getContext('2d');
+    var graficoPizza = new Chart(ctx, {
+        type: 'bar', // Tipo de gráfico de barras
+            data: {
+                labels: @json($usuarios), // Nomes dos usuários (do controlador)
+                datasets: [{
+                    label: 'Total de Vendas',
+                    data: @json($quantidades), // Quantidade de vendas (do controlador)
+                    backgroundColor: 'rgba(255, 0, 0, 0.2)', // Cor de fundo das barras
+                    borderColor: 'rgb(255, 99, 132)', // Cor da borda das barras
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true // O eixo Y começa no zero
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.raw + ' vendas';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+</script>
 @stop

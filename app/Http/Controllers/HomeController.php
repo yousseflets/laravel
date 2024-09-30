@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Produtos;
 use App\Models\Fornecedores;
 use App\Models\Categorias;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -29,18 +30,39 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $totalProdutosEstoque = Produtos::sum('qtd_estoque');
-        $totalVendasUnidades = Vendas::whereDate('data_venda', '<=', now())->sum('quantidade');
+        $totalProdutosEstoque = Produtos::where('status', 1)->sum('qtd_estoque');
+        $totalVendasUnidades = Vendas::whereDate('data_venda', '<=', now())->where('status', 1)->sum('quantidade');
         $dataHoje = Carbon::now()->format('Y-m-d H:i:s');
-
+        $totalLucro = Vendas::where('status', 1)->sum('lucro_venda');
+        $totalVendasValor = Vendas::whereDate('data_venda', '<=', now())->where('status', 1)->sum('total');
         $totalPorDia = Vendas::select(DB::raw('DATE(data_venda) as date'), DB::raw('SUM(total) as total'),
         DB::raw('SUM(quantidade) as quantidade'))
+            ->where('status', 1)
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get();
 
-        $totalVendasValor = Vendas::whereDate('data_venda', '<=', now())->sum('total');
+        $vendas = User::withSum(['vendas' => function ($query) {
+            $query->where('status', 1);
+        }], 'quantidade')
+            ->orderByDesc('vendas_sum_quantidade') 
+            ->get(['name', 'vendas_sum_quantidade']);
 
-        return view('home', compact('totalProdutosEstoque', 'totalVendasUnidades','totalVendasValor','dataHoje', 'totalPorDia'));
+        $usuarios = $vendas->pluck('name')->toArray();
+        $quantidades = $vendas->pluck('vendas_sum_quantidade')->toArray();
+
+
+        return view('home',
+            compact(
+                'totalLucro',
+                'totalProdutosEstoque',
+                'totalVendasUnidades',
+                'totalVendasValor',
+                'dataHoje',
+                'totalPorDia',
+                'usuarios',
+                'quantidades'
+            )
+        );
     }
 }

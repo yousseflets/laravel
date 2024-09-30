@@ -315,11 +315,7 @@ return [
             'url' => '/vendas',
             'icon' => 'fa fa-shopping-cart',
         ],
-        [
-            'text' => 'Historico',
-            'url' => '/historico',
-            'icon' => 'fa fa-list-ul',
-        ],
+
     ],
 
     /*

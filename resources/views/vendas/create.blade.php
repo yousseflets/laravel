@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Produtos - Cadastro')
+@section('title', 'Registro de Venda')
 
 
 @section('content')
@@ -11,7 +11,7 @@
             @csrf
             <div class="card-body col-12" style=" border-style: 2px, solid; border-radius: 5px;box-shadow: 10px 10px 16px 10px rgb(175, 175, 175);">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-3">
                         <label for="preco">Produto</label>
                         <select id="produto" name="produto"  class="form-control">
                             <option value="">Selecione um produto</option>
@@ -22,29 +22,33 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <label for="preco">Preço</label>
                         <p><span id="preco" class="form-control" readonly>R$ 0,00</span></p>
                     </div>
-                    <div class="col-4">
-                        <label for="desconto">Desconto (%)</label>
-                        <input type="text" class="form-control" id="desconto" name="desconto">
+                    <div class="col-3">
+                        <label for="desconto">Desconto (%)<small style="color:red;"> Vendas sem desconto digitar 0</small></label>
+                        <input type="text" class="form-control" id="desconto" name="desconto" value="0">
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <label for="quantidade">Quantidade</label>
                         <input type="text" class="form-control" id="quantidade" name="quantidade" required>
                     </div>
-                    <div class="small-box bg-success col-md-12" style="text-align: center;">
-                        <div class="inner">
-                            <p><br/></p>
-                            <h3 id="total">TOTAL R$ 0,00</h3>
-                            <p><br/></p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-bag"></i>
-                    </div>
 
+                    <div class="col-md-12 col-sm-6 col-md-3">
+                        <div class="info-box mb-3" style="text-align: center;">
+                            <span class="info-box-icon bg-success elevation-2"><i class="fas fa-dollar-sign"> </i></span>
+                            <div class="info-box-content">
+                                <br/>
+                                <h1 id="total" class="info-box-number">R$ 0,00</h1>
+                                <span style="font-size: 9px;">Valor total da compra</span>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+
                 <div class="card-body" style="text-align: right;">
                     <a href="{{ route('vendas.index') }}" class="btn btn-md btn-secondary">
                         Voltar
@@ -56,6 +60,7 @@
     </section>
 @endsection
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     $(document).ready(function(){
         var preco = 0;
@@ -83,6 +88,7 @@
             } else {
                 $('#preco').text('R$ 0,00');
                 $('#total').text('R$ 0,00');
+                $('#desconto').text('0');
             }
         });
 
@@ -94,15 +100,19 @@
         // Função para calcular o total
         function calcularTotal() {
             var quantidade = parseFloat($('#quantidade').val());
+            var desconto = parseFloat($('#desconto').val());
 
             if (quantidade > 0 && preco > 0) {
                 var total = preco * quantidade;
+                var valorDesconto = (total * desconto) / 100;
+                var valorFinal = total - valorDesconto;
 
                 // Formata o total como moeda (R$)
-                var totalFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                var totalFormatado = valorFinal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
                 $('#total').text(totalFormatado);
             } else {
                 $('#total').text('R$ 0,00');
+                $('#desconto').text('0');
             }
         }
     });
