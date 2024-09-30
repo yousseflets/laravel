@@ -1,7 +1,61 @@
 @extends('adminlte::page')
 
 @section('title', 'Registro de Venda')
+<style>
+    /* Estilos para o dropdown customizado */
+    .custom-dropdown {
+        position: relative;
+        display: inline-block;
+        width: 250px;
+    }
 
+    .dropdown-selected {
+        padding: 10px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .dropdown-selected img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+
+    .dropdown-list {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        background-color: white;
+        z-index: 999;
+    }
+
+    .dropdown-item {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown-item img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        margin-right: 10px;
+    }
+</style>
 
 @section('content')
 <br/>
@@ -13,15 +67,16 @@
                 <div class="row">
                     <div class="col-3">
                         <label for="preco">Produto</label>
-                        <select id="produto" name="produto"  class="form-control">
-                            <option value="">Selecione um produto</option>
+                        <select id="produto" name="produto"  class="form-control" >
+                            <option value="" >Selecione um produto</option>
                             @foreach($produtos as $produto)
                                 @if($produto->status == 1)
-                                    <option value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
+                                    <option data-imagem="{{ $produto->imagem }}" value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
                                 @endif
                             @endforeach
                         </select>
                     </div>
+
                     <div class="col-3">
                         <label for="preco">Preço</label>
                         <p><span id="preco" class="form-control" readonly>R$ 0,00</span></p>
@@ -46,6 +101,10 @@
                             </div>
                         </div>
                     </div>
+
+                    <div style="margin-top: 20px;">
+                        <img id="produtoImagem" src="" alt="Imagem do Produto" style="display:none; width: 200px; height: auto;" />
+                    </div>
                 </div>
 
 
@@ -59,6 +118,7 @@
         </form>
     </section>
 @endsection
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>

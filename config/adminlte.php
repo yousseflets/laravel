@@ -301,19 +301,27 @@ return [
         ],
 
         [
-            'text' => 'Fornecedores',
-            'url' => '/fornecedores',
-            'icon' => 'fa fa-truck',
-        ],
-        [
-            'text' => 'Produtos',
-            'url' => '/produtos',
-            'icon' => 'fa fa-archive',
-        ],
-        [
             'text' => 'Vendas',
             'url' => '/vendas',
             'icon' => 'fa fa-shopping-cart',
+        ],
+
+        [
+            'text'    => 'Cadastros',
+            'icon'    => 'fa fa-plus-circle',
+            'submenu' => [
+                [
+                    'text' => 'Fornecedores',
+                    'url' => '/fornecedores',
+                    'icon' => 'fa fa-truck',
+                ],
+                [
+                    'text' => 'Produtos',
+                    'url' => '/produtos',
+                    'icon' => 'fa fa-archive',
+                ],
+
+            ],
         ],
 
     ],

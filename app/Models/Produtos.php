@@ -37,4 +37,9 @@ class Produtos extends Model
     {
         return $this->hasMany(Vendas::class);
     }
+
+    public function getImagemUrlAttribute()
+    {
+        return asset('storage/' . $this->image);
+    }
 }
