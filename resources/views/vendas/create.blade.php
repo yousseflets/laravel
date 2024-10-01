@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Registro de Venda')
+
 <style>
     /* Estilos para o dropdown customizado */
     .custom-dropdown {
@@ -55,6 +56,12 @@
         object-fit: cover;
         margin-right: 10px;
     }
+
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 
 @section('content')
@@ -71,11 +78,13 @@
                             <option value="" >Selecione um produto</option>
                             @foreach($produtos as $produto)
                                 @if($produto->status == 1)
-                                    <option data-imagem="{{ $produto->imagem }}" value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
+                                    <option data-image="{{ asset('storage/' . $produto->image)}}" value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
                                 @endif
                             @endforeach
                         </select>
                     </div>
+
+
 
                     <div class="col-3">
                         <label for="preco">Preço</label>
@@ -90,7 +99,12 @@
                         <input type="text" class="form-control" id="quantidade" name="quantidade" required>
                     </div>
 
-                    <div class="col-md-12 col-sm-6 col-md-3">
+                    <div class="col-md-6 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <img id="product-image" src="" alt="Imagem do Produto" style="display:none; max-width: 300px;"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-md-3">
                         <div class="info-box mb-3" style="text-align: center;">
                             <span class="info-box-icon bg-success elevation-2"><i class="fas fa-dollar-sign"> </i></span>
                             <div class="info-box-content">
@@ -100,10 +114,6 @@
                                 <br/>
                             </div>
                         </div>
-                    </div>
-
-                    <div style="margin-top: 20px;">
-                        <img id="produtoImagem" src="" alt="Imagem do Produto" style="display:none; width: 200px; height: auto;" />
                     </div>
                 </div>
 
@@ -176,4 +186,20 @@
             }
         }
     });
+
+
+    $(document).ready(function() {
+        $('#produto').change(function() {
+            // Obter a URL da imagem selecionada
+            var selectedProductImage = $('#produto option:selected').data('image');
+
+            // Verificar se há uma imagem associada ao produto selecionado
+            if (selectedProductImage) {
+                $('#product-image').attr('src', selectedProductImage).show(); // Mostrar a imagem
+            } else {
+                $('#product-image').hide(); // Ocultar a imagem se não houver
+            }
+        });
+    });
+
 </script>

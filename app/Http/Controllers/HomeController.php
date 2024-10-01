@@ -10,6 +10,7 @@ use App\Models\Categorias;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use ConsoleTVs\Charts\Facades\Charts;
 
 class HomeController extends Controller
 {
@@ -45,11 +46,22 @@ class HomeController extends Controller
         $vendas = User::withSum(['vendas' => function ($query) {
             $query->where('status', 1);
         }], 'quantidade')
-            ->orderByDesc('vendas_sum_quantidade') 
+            ->orderByDesc('vendas_sum_quantidade')
             ->get(['name', 'vendas_sum_quantidade']);
 
         $usuarios = $vendas->pluck('name')->toArray();
         $quantidades = $vendas->pluck('vendas_sum_quantidade')->toArray();
+
+
+        $vendasPorCategoria = Vendas::selectRaw('categorias.nome as categoria, SUM(vendas.quantidade) as total_vendido')
+        ->join('produtos', 'produtos.id', '=', 'vendas.produto_id')
+        ->join('categorias', 'categorias.id', '=', 'produtos.categoria_id')
+        ->groupBy('categorias.nome')
+        ->get();
+
+        // Criar o gráfico
+        $categorias = $vendasPorCategoria->pluck('categoria')->toArray();
+        $valores = $vendasPorCategoria->pluck('total_vendido')->toArray();
 
 
         return view('home',
@@ -61,7 +73,9 @@ class HomeController extends Controller
                 'dataHoje',
                 'totalPorDia',
                 'usuarios',
-                'quantidades'
+                'quantidades',
+                'categorias',
+                'valores'
             )
         );
     }

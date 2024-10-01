@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'HookahLounge',
+    'title' => 'AkbarHookahTabacaria',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,9 +63,9 @@ return [
     |
     */
 
-    'logo' => '<b>Hookah</b>Lounge',
-    'logo_img' => 'vendor/adminlte/dist/img/hookahLounge.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo' => '<b>Akbar</b>Hookah<small>Tabacaria</small>',
+    'logo_img' => 'vendor/adminlte/dist/img/tabacariaAkbarHookah.png',
+    'logo_img_class' => 'brand-image img-circle elevation-5',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => false,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/hookahLounge.png',
+            'path' => 'vendor/adminlte/dist/img/tabacariaAkbarHookah.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/hookahLounge.png',
+            'path' => 'vendor/adminlte/dist/img/tabacariaAkbarHookah.png',
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
@@ -299,11 +299,17 @@ return [
             'url' => '/home',
             'icon' => 'fa fa-home',
         ],
+        [
+
+        ],
 
         [
             'text' => 'Vendas',
             'url' => '/vendas',
             'icon' => 'fa fa-shopping-cart',
+        ],
+        [
+
         ],
 
         [
@@ -316,11 +322,18 @@ return [
                     'icon' => 'fa fa-truck',
                 ],
                 [
+
+                ],
+                [
                     'text' => 'Produtos',
                     'url' => '/produtos',
                     'icon' => 'fa fa-archive',
                 ],
-
+                [
+                    'text' => 'Usuarios',
+                    'url' => '/usuarios',
+                    'icon' => 'fa fa-users',
+                ],
             ],
         ],
 

@@ -1,24 +1,22 @@
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <style>
-
-    .mensagemBoasVindas {
+   .mensagemBoasVindas {
         font-family: "Poppins", sans-serif;
         font-size: 48px;
         text-align: center;
         justify-content: center;
         text-transform: uppercase;
+        color: black;
     }
     .data {
         font-size: 15px;
-        font-family: "Lucida Console", "Courier New", monospace;
+        font-family: "Poppins", sans-serif;
         text-align: center;
         justify-content: center;
+        text-transform: uppercase;
     }
     .inner {
         /* font-size: 45px; */
@@ -38,8 +36,12 @@
 
 </style>
 @section('content_header')
-    <h2 class="mensagemBoasVindas"><b>Registro de vendas</b></h2>
-    <h4 class="data">{{ \App\Helpers\DataHelper::showDateTime($dataHoje) }}</h4>
+    <h2 class="mensagemBoasVindas">
+        <img src="vendor/adminlte/dist/img/tabacariaAkbarHookah.png" style="width: 100px; height: auto; border-radius: 50%;">
+        <b>Registro de vendas</b>
+        <img src="vendor/adminlte/dist/img/tabacariaAkbarHookah.png" style="width: 100px; height: auto; border-radius: 50%;">
+    </h2>
+    <h4 class="data">Seja bem vindo(a)<b> {{ auth()->user()->name }}</b> <br> {{ \App\Helpers\DataHelper::showDateTime($dataHoje) }}</h4>
 @stop
 
 @section('content')
@@ -109,6 +111,10 @@
         <div style="width: 50%; margin: auto;">
             <canvas  id="graficoPizza"></canvas>
         </div>
+
+        <div style="width: 50%; margin: 0 auto;">
+            <canvas id="vendasChart"></canvas>
+        </div>
     </div>
 </section>
 
@@ -130,7 +136,7 @@
             data: {
                 labels: @json($usuarios), // Nomes dos usuários (do controlador)
                 datasets: [{
-                    label: 'Total de Vendas',
+                    label: 'Total de Vendas Por Vendedor ',
                     data: @json($quantidades), // Quantidade de vendas (do controlador)
                     backgroundColor: 'rgba(255, 0, 0, 0.2)', // Cor de fundo das barras
                     borderColor: 'rgb(255, 99, 132)', // Cor da borda das barras
@@ -154,6 +160,28 @@
                                 return tooltipItem.raw + ' vendas';
                             }
                         }
+                    }
+                }
+            }
+        });
+
+        var ctx = document.getElementById('vendasChart').getContext('2d');
+        var vendasChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($categorias) !!},
+                datasets: [{
+                    label: 'Total Vendido Por Categoria ',
+                    data: {!! json_encode($valores) !!},
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }

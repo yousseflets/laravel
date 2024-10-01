@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Produtos;
 use App\Models\Fornecedores;
 use App\Models\Categorias;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -110,9 +112,15 @@ class ProdutosController extends Controller
       return redirect()->route('produtos.index')->with('success', 'Produto inativado com sucesso.');
     }
 
-    public function getPreco($id)
+    public function exportPDF()
     {
-        $produto = Produtos::find($id);
-        return response()->json(['preco' => $produto->preco]);
+        // Obtém todos os produtos
+        $produtos = Produtos::all();
+
+        // Carrega a view e passa os dados dos produtos
+        $pdf = FacadePdf::loadView('produtos.pdf', compact('produtos'));
+
+        // Retorna o download do arquivo PDF
+        return $pdf->download('produtos.pdf');
     }
 }

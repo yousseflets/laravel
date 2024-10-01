@@ -20,7 +20,7 @@ class VendasController extends Controller
 
     public function index()
     {
-        $vendas = Vendas::paginate(6);
+        $vendas = Vendas::paginate(5);
         $produtos = Produtos::all();
 
         $hoje = Carbon::today();

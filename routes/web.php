@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordChangeController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +22,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/password/change', [PasswordChangeController::class, 'showChangePasswordForm'])->name('password.change');
+Route::post('/password/change', [PasswordChangeController::class, 'changePassword']);
+
+Route::get('/usuarios', [RegisterController::class, 'index'])->name('usuarios.index');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+
 
 Route::get('/cep/{cep}', [App\Http\Controllers\Cep\CepController::class, 'buscarCep']);
 
@@ -37,7 +50,8 @@ Route::post('/produtos/cadastro', [App\Http\Controllers\Produtos\ProdutosControl
 Route::get('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'edit'])->name('produtos.edit');
 Route::post('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'update'])->name('produtos.update');
 Route::get('/produtos/deletar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'delete'])->name('produtos.delete');
-Route::get('/produtos/preco/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'getPreco']);
+Route::get('/produtos/export-pdf', [App\Http\Controllers\Produtos\ProdutosController::class, 'exportPDF'])->name('produtos.export_pdf');
+
 
 
 Route::get('/vendas', [App\Http\Controllers\Vendas\VendasController::class, 'index'])->name('vendas.index');

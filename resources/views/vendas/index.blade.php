@@ -1,8 +1,13 @@
 @extends('adminlte::page')
 
 @section('title', 'Registro de Vendas')
-
-
+<style>
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+</style>
 @section('content')
 
 
@@ -56,7 +61,7 @@
             <table class="table table-bordered table-hover" style="background-color: #fff;">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Produto</th>
                         <th>Nome do Produto</th>
                         <th>Quantidade</th>
                         <th>Desconto</th>
@@ -70,7 +75,13 @@
                 </thead>
                 @forelse ($vendas as $v)
                     <tr style="background-color: {{$v->status == 1 ? 'lightgreen' : 'indianred' }}; color: {{$v->status == 1 ? 'black' : 'white' }} ">
-                        <td>{{ $v->id }}</td>
+                        <td>
+                            @if ($v->produto->image)
+                                <img src="{{ asset('storage/' . $v->produto->image) }}" alt="{{ $v->produto->name }}" style="width: 50px; height: auto;">
+                            @else
+                                <p>Sem imagem</p>
+                            @endif
+                        </td>
                         <td>{{ $v->produto->nome }}</td>
                         <td>{{ $v->quantidade }}</td>
                         <td>{{ \App\Helpers\TextoHelper::porcentagem($v->desconto , 2) ? \App\Helpers\TextoHelper::porcentagem($v->desconto , 2) : '0'}} </td>

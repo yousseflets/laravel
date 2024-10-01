@@ -2,51 +2,40 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    // Exibe o formulário de registro
+    public function index()
     {
-        $this->middleware('guest');
+        $usuarios = User::paginate(5);
+        return view('auth.index', compact('usuarios'));
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    // Trata o registro do usuário
+    public function register(Request $request)
+    {
+        // Validação dos dados
+        $this->validator($request->all())->validate();
+
+        // Criação do usuário
+        $user = $this->create($request->all());
+
+        // Redireciona ou faz login
+        return redirect()->route('usuarios.index')->with('success', 'Cadastro realizado com sucesso!');
+    }
+
+    // Validação dos dados
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -56,12 +45,7 @@ class RegisterController extends Controller
         ]);
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
-     */
+    // Cria o usuário na tabela users
     protected function create(array $data)
     {
         return User::create([

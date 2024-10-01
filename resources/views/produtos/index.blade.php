@@ -1,7 +1,13 @@
 @extends('adminlte::page')
 
 @section('title', 'Produtos')
-
+<style>
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    </style>
 
 @section('content')
 
@@ -12,11 +18,16 @@
                     Cadastrar Produtos
                 </a>
             </div>
+            <div class="col-lg-12" style="text-align: right;">
+                <a href="{{ route('produtos.export_pdf') }}" class="btn btn-md btn-warning">
+                    Exportar Produtos
+                </a>
+            </div>
             <br>
             <table class="dataTables_wrapper dt-bootstrap4 table table-bordered table-hover" id="produtos" style="background-color: #fff;">
                 <thead>
                     <tr>
-                        <th>Imagem</th>
+                        <th>Produto</th>
                         <th>Nome do Produto</th>
                         <th>Fornecedor</th>
                         <th>Categoria</th>
