@@ -51,7 +51,9 @@ Route::get('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosContr
 Route::post('/produtos/editar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'update'])->name('produtos.update');
 Route::get('/produtos/deletar/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'delete'])->name('produtos.delete');
 Route::get('/produtos/export-pdf', [App\Http\Controllers\Produtos\ProdutosController::class, 'exportPDF'])->name('produtos.export_pdf');
+Route::get('/produtos/preco/{id}', [App\Http\Controllers\Produtos\ProdutosController::class, 'getPreco']);
 
+Route::get('/get-produtos/{fornecedorId}', [App\Http\Controllers\Produtos\ProdutosController::class, 'getProductsBySupplier']);
 
 
 Route::get('/vendas', [App\Http\Controllers\Vendas\VendasController::class, 'index'])->name('vendas.index');

@@ -25,4 +25,9 @@ class Fornecedores extends Model
         'celular',
         'status'
     ];
+
+    public function produtos()
+    {
+        return $this->hasMany(Produtos::class);
+    }
 }

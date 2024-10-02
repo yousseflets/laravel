@@ -77,7 +77,7 @@ img {
                     <tr style="background-color: {{$v->status == 1 ? 'lightgreen' : 'indianred' }}; color: {{$v->status == 1 ? 'black' : 'white' }} ">
                         <td>
                             @if ($v->produto->image)
-                                <img src="{{ asset('storage/' . $v->produto->image) }}" alt="{{ $v->produto->name }}" style="width: 50px; height: auto;">
+                                <img src="{{ asset('storage/' . $v->produto->image) }}" alt="{{ $v->produto->name }}" style="width: 40px; height: auto;">
                             @else
                                 <p>Sem imagem</p>
                             @endif
@@ -87,7 +87,7 @@ img {
                         <td>{{ \App\Helpers\TextoHelper::porcentagem($v->desconto , 2) ? \App\Helpers\TextoHelper::porcentagem($v->desconto , 2) : '0'}} </td>
                         <td>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($v->total,  2) }}</td>
                         <td>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($v->lucro_venda,  2)}}</td>
-                        <td>{{ \App\Helpers\DataHelper::showDateTime($v->data_venda) }}</td>
+                        <td>{{ \App\Helpers\DataHelper::showDate($v->data_venda) }}</td>
                         <td>{{ $v->user->name }}</td>
                         <td>{{ $v->status == 1 ? 'Realizada' : 'Cancelada' }}</td>
                         <td>

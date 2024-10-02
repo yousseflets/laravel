@@ -73,35 +73,44 @@
             <div class="card-body col-12" style=" border-style: 2px, solid; border-radius: 5px;box-shadow: 10px 10px 16px 10px rgb(175, 175, 175);">
                 <div class="row">
                     <div class="col-3">
-                        <label for="preco">Produto</label>
+                        <label for="produto">Fornecedor</label>
+                        <select id="fornecedor"  name="fornecedor" class="form-control">
+                            <option value="">Selecione um fornecedor</option>
+                            @foreach ($suppliers as $supplier)
+                                @if($supplier->status == 1)
+                                    <option value="{{ $supplier->id }}">{{ $supplier->nome_fantasia }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-3">
+                        <label for="produto">Produto</label>
                         <select id="produto" name="produto"  class="form-control" >
                             <option value="" >Selecione um produto</option>
                             @foreach($produtos as $produto)
                                 @if($produto->status == 1)
-                                    <option data-image="{{ asset('storage/' . $produto->image)}}" value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
+                                    <option  value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
                                 @endif
                             @endforeach
                         </select>
                     </div>
 
-
-
-                    <div class="col-3">
+                    <div class="col-2">
                         <label for="preco">Preço</label>
                         <p><span id="preco" class="form-control" readonly>R$ 0,00</span></p>
                     </div>
-                    <div class="col-3">
-                        <label for="desconto">Desconto (%)<small style="color:red;"> Vendas sem desconto digitar 0</small></label>
+                    <div class="col-2">
+                        <label for="desconto">Desconto (%)</label>
                         <input type="text" class="form-control" id="desconto" name="desconto" value="0">
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         <label for="quantidade">Quantidade</label>
                         <input type="text" class="form-control" id="quantidade" name="quantidade" required>
                     </div>
 
                     <div class="col-md-6 col-sm-6 col-md-6">
                         <div class="form-group">
-                            <img id="product-image" src="" alt="Imagem do Produto" style="display:none; max-width: 300px;"/>
+                            {{-- <img id="productImageDisplay" src="" alt="Imagem do Produto" style="display: none;"/> --}}
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6 col-md-3">
@@ -116,7 +125,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="card-body" style="text-align: right;">
                     <a href="{{ route('vendas.index') }}" class="btn btn-md btn-secondary">
@@ -134,7 +142,6 @@
 <script>
     $(document).ready(function(){
         var preco = 0;
-
         // Quando o produto é alterado
         $('#produto').change(function(){
             var produtoId = $(this).val();
@@ -188,18 +195,49 @@
     });
 
 
-    $(document).ready(function() {
-        $('#produto').change(function() {
-            // Obter a URL da imagem selecionada
-            var selectedProductImage = $('#produto option:selected').data('image');
 
-            // Verificar se há uma imagem associada ao produto selecionado
-            if (selectedProductImage) {
-                $('#product-image').attr('src', selectedProductImage).show(); // Mostrar a imagem
-            } else {
-                $('#product-image').hide(); // Ocultar a imagem se não houver
-            }
+
+    $(document).ready(function() {
+            $('#fornecedor').on('change', function() {
+                var fornecedorId = $(this).val();
+                console.log('Fornecedor ID:', fornecedorId);
+
+                // Limpar o select de produtos
+                $('#produto').html('<option value="">Selecione um produto</option>');
+
+                // Verifica se um fornecedor foi selecionado
+                if (fornecedorId) {
+
+                    $.ajax({
+                        url: '/get-produtos/' + fornecedorId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            console.log('Produtos recebidos:', data);
+                            // Adicionar os produtos ao select
+                            $.each(data, function(key, produto) {
+                                $('#produto').append('<option value="' + produto.id + '" data-image="{{ asset('storage/produtos/') }}/' + produto.image + '">' + produto.nome + '</option>');
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Erro:', error);
+                            alert('Erro ao buscar produtos');
+                        }
+                    });
+                }
+            });
+
+            $('#produto').on('change', function() {
+                var selectedProductImage = $('#produto option:selected').data('image');
+                console.log('Imagem do Produto Selecionado:', selectedProductImage);
+
+                // Exibir a imagem do produto
+                if (selectedProductImage) {
+                    $('#productImageDisplay').attr('src', selectedProductImage).show();
+                } else {
+                    $('#productImageDisplay').hide();
+                }
+            });
         });
-    });
 
 </script>

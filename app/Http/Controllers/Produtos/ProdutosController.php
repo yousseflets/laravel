@@ -112,6 +112,12 @@ class ProdutosController extends Controller
       return redirect()->route('produtos.index')->with('success', 'Produto inativado com sucesso.');
     }
 
+    public function getPreco($id)
+    {
+        $produto = Produtos::find($id);
+        return response()->json(['preco' => $produto->preco]);
+    }
+
     public function exportPDF()
     {
         // Obtém todos os produtos
@@ -122,5 +128,14 @@ class ProdutosController extends Controller
 
         // Retorna o download do arquivo PDF
         return $pdf->download('produtos.pdf');
+    }
+
+    public function getProductsBySupplier($fornecedorId)
+    {
+        // Buscar todos os produtos relacionados ao fornecedor
+        $produtos = Produtos::where('fornecedor_id', $fornecedorId)->get();
+
+        // Retornar os produtos em formato JSON
+        return response()->json($produtos);
     }
 }

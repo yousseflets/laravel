@@ -17,12 +17,11 @@
                 <a href="{{ route('produtos.create') }}" class="btn btn-md btn-primary">
                     Cadastrar Produtos
                 </a>
-            </div>
-            <div class="col-lg-12" style="text-align: right;">
                 <a href="{{ route('produtos.export_pdf') }}" class="btn btn-md btn-warning">
                     Exportar Produtos
                 </a>
             </div>
+
             <br>
             <table class="dataTables_wrapper dt-bootstrap4 table table-bordered table-hover" id="produtos" style="background-color: #fff;">
                 <thead>

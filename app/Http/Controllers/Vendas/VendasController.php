@@ -37,8 +37,9 @@ class VendasController extends Controller
     public function create (){
 
         $produtos = Produtos::all();
+        $suppliers = Fornecedores::all();
 
-        return view('vendas.create', compact('produtos'));
+        return view('vendas.create', compact('produtos', 'suppliers'));
     }
 
     public function store(Request $request)
@@ -50,6 +51,7 @@ class VendasController extends Controller
         }
 
         $total = $produtos->preco * $request->quantidade;
+
         $data =  Carbon::now()->format('Y-m-d H:i:s');
 
 
