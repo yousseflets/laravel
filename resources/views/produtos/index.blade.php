@@ -17,8 +17,8 @@
                 <a href="{{ route('produtos.create') }}" class="btn btn-md btn-primary">
                     Cadastrar Produtos
                 </a>
-                <a href="{{ route('produtos.export_pdf') }}" class="btn btn-md btn-warning">
-                    Exportar Produtos
+                <a href="{{ route('produtos.export_pdf') }}" class="btn btn-lg btn-warning" title="Download lista de produtos">
+                    <i class="fa fa-download" aria-hidden="true"></i>
                 </a>
             </div>
 

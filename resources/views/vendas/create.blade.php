@@ -89,7 +89,7 @@
                             <option value="" >Selecione um produto</option>
                             @foreach($produtos as $produto)
                                 @if($produto->status == 1)
-                                    <option  value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }}</option>
+                                    <option  value="{{ $produto->id }}">{{ $produto->nome }} - {{ $produto->categoria->nome }} - {{ $produto->qtd_estoque }}</option>
                                 @endif
                             @endforeach
                         </select>

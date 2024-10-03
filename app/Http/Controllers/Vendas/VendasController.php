@@ -101,7 +101,38 @@ class VendasController extends Controller
             $venda = Vendas::where('id', '=', $venda->id)->update(['status' => 1]);
         }
 
+
         // Redirecionar ou retornar uma resposta
         return redirect()->route('vendas.index')->with( 'Venda cancelada e estoque atualizado.');
+    }
+
+    public function relatorio(Request $request)
+    {
+        $vendas = Vendas::paginate(5);
+        $produtos = Produtos::all();
+
+        // Captura os parâmetros de data
+        $data_inicial = $request->input('data_inicial');
+        $data_final = $request->input('data_final');
+        // dd($data_inicial, $data_final);
+
+        // Cria a query inicial
+        $filtroRelatorio = Vendas::query();
+
+        if ($data_inicial && $data_final) {
+            // Usa o Query Builder para construir a query SQL
+            $filtroRelatorio = Vendas::whereDate('data_venda', '>=', $data_inicial)
+                ->whereDate('data_venda', '<=', $data_final)
+                ->get(); // Você pode usar paginate se quiser paginar os resultados
+
+        } else {
+            // Se nenhuma data for fornecida, retorna todas as vendas
+            $filtroRelatorio = Vendas::get();
+        }
+
+        $totalVendas = $filtroRelatorio->sum('total');
+
+
+        return view('vendas.relatorio', compact('vendas','produtos', 'filtroRelatorio', 'totalVendas'));
     }
 }

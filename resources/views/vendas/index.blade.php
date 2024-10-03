@@ -14,8 +14,11 @@ img {
     <section class="content">
         <div class="card-body" >
             <div class="col-lg-12 col-sm-6 justify-content-end" style="text-align: right;">
-                <a href="{{ route('vendas.create') }}" class="btn btn-success btn-lg col-lg-3 dz-clickable">
-                    Registrar Venda
+                <a href="{{ route('vendas.create') }}" class="btn btn-success btn-lg" title="Registrar Venda">
+                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                </a>
+                <a href="{{ route('vendas.relatorio') }}" class="btn btn-lg btn-md  btn-info" title="Relátorio Vendas">
+                    <i class="fa fa-list-ol fa-lg" aria-hidden="true"></i>
                 </a>
             </div>
             <br>

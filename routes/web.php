@@ -60,3 +60,4 @@ Route::get('/vendas', [App\Http\Controllers\Vendas\VendasController::class, 'ind
 Route::get('/vendas/cadastro', [App\Http\Controllers\Vendas\VendasController::class, 'create'])->name('vendas.create');
 Route::post('/vendas/cadastro', [App\Http\Controllers\Vendas\VendasController::class, 'store'])->name('vendas.store');
 Route::get('/vendas/cancelar-venda/{id}', [App\Http\Controllers\Vendas\VendasController::class, 'cancelarVenda'])->name('vendas.cancelarVenda');
+Route::get('/vendas/relatorio', [App\Http\Controllers\Vendas\VendasController::class, 'relatorio'])->name('vendas.relatorio');
