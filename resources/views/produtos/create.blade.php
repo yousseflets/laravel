@@ -87,4 +87,29 @@
             preview.style.display = 'none'; // Esconde a imagem
         }
     }
+
+    function formatValue() {
+        var precoField = document.getElementById('preco');
+        var precoCustoField = document.getElementById('preco_custo');
+        // Substitui a vírgula por ponto antes de enviar o formulário
+        precoField.value = precoField.value.replace(',', '.');
+        precoCustoField.value = precoCustoField.value.replace(',', '.');
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const precoInput = document.getElementById('preco');
+    const precoCustoInput = document.getElementById('preco_custo');
+
+    // Função para substituir ponto por vírgula
+    function formatarPreco(input) {
+        input.addEventListener('input', function() {
+            let valor = this.value.replace(/\./g, ''); // Remove pontos
+            valor = valor.replace(',', '.'); // Troca vírgula por ponto
+            this.value = valor.replace(/(\d+)(\d{2})$/, '$1,$2'); // Adiciona vírgula antes dos últimos dois dígitos
+        });
+    }
+
+    formatarPreco(precoInput);
+    formatarPreco(precoCustoInput);
+});
 </script>

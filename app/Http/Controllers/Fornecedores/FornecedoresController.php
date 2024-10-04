@@ -50,7 +50,6 @@ class FornecedoresController extends Controller
     public function edit($id)
     {
       $fornecedores = Fornecedores::find($id);
-    //   dd($fornecedores);
 
       return view('fornecedores.edit', compact('fornecedores'));
     }
@@ -58,7 +57,6 @@ class FornecedoresController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
       $fornecedores = Fornecedores::find($id);
       $fornecedores->fill($request->all());
       $fornecedores->save();

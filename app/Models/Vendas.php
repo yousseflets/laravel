@@ -19,7 +19,10 @@ class Vendas extends Model
         'data_venda',
         'desconto',
         'lucro_venda',
-        'status'
+        'status',
+        'metodo_pagamento_id',
+        'parcelado',
+        'qtd_parcelado'
     ];
 
     public function Produto()
@@ -30,6 +33,11 @@ class Vendas extends Model
     public function User()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function metodoPagamento()
+    {
+        return $this->belongsTo(MetodoPagamento::class, 'metodo_pagamento_id', 'id');
     }
 
 

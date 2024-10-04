@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Vendas;
 use App\Http\Controllers\Controller;
 use App\Models\Categorias;
 use App\Models\Fornecedores;
+use App\Models\MetodoPagamento;
 use App\Models\Produtos;
 use App\Models\Vendas;
 use Carbon\Carbon;
@@ -38,8 +39,9 @@ class VendasController extends Controller
 
         $produtos = Produtos::all();
         $suppliers = Fornecedores::all();
+        $metodoPagamento = MetodoPagamento::all();
 
-        return view('vendas.create', compact('produtos', 'suppliers'));
+        return view('vendas.create', compact('produtos', 'suppliers', 'metodoPagamento'));
     }
 
     public function store(Request $request)
@@ -54,7 +56,6 @@ class VendasController extends Controller
 
         $data =  Carbon::now()->format('Y-m-d H:i:s');
 
-
         $desconto = $request->input('desconto', 0);
 
         if ($desconto > 0) {
@@ -62,6 +63,7 @@ class VendasController extends Controller
         } else {
             $valorFinal = $total;
         }
+        $metodoPagamentoId = $request->input('metodo_pagamento');
 
         $vendas = Vendas::create([
             'produto_id' => $produtos->id,
@@ -71,7 +73,12 @@ class VendasController extends Controller
             'data_venda' => $data,
             'desconto' => $desconto,
             'user_id' => auth()->user()->id,
+            'metodo_pagamento_id' => $metodoPagamentoId,
+            'parcelado'  => $metodoPagamentoId == 2 && $request->qtd_parcelado != 1 ? 1 : 0, //se a venda for como credito avista sera salvo com 0 (nao parcelado)
+            'qtd_parcelado'  => $request->qtd_parcelado ? $request->qtd_parcelado : null,
+
         ]);
+
 
         $vendas->save();
 
@@ -84,17 +91,13 @@ class VendasController extends Controller
 
     public function cancelarVenda($id)
     {
-        // Encontrar a venda pelo ID
         $venda = Vendas::findOrFail($id);
 
-        // Encontrar o produto relacionado à venda
         $produto = Produtos::findOrFail($venda->produto_id);
 
-        // Atualizar o estoque do produto, somando a quantidade vendida de volta ao estoque
         $produto->qtd_estoque += $venda->quantidade;
         $produto->save();
 
-        // Agora, remover a venda ou marcar como cancelada (excluir no exemplo)
         if($venda->status == 1){
             $produtos = Vendas::where('id', '=', $venda->id)->update(['status' => 0]);
         }elseif($venda->status == 0){
@@ -102,7 +105,6 @@ class VendasController extends Controller
         }
 
 
-        // Redirecionar ou retornar uma resposta
         return redirect()->route('vendas.index')->with( 'Venda cancelada e estoque atualizado.');
     }
 
@@ -111,22 +113,16 @@ class VendasController extends Controller
         $vendas = Vendas::paginate(5);
         $produtos = Produtos::all();
 
-        // Captura os parâmetros de data
         $data_inicial = $request->input('data_inicial');
         $data_final = $request->input('data_final');
-        // dd($data_inicial, $data_final);
 
-        // Cria a query inicial
         $filtroRelatorio = Vendas::query();
 
         if ($data_inicial && $data_final) {
-            // Usa o Query Builder para construir a query SQL
             $filtroRelatorio = Vendas::whereDate('data_venda', '>=', $data_inicial)
                 ->whereDate('data_venda', '<=', $data_final)
-                ->get(); // Você pode usar paginate se quiser paginar os resultados
-
+                ->get();
         } else {
-            // Se nenhuma data for fornecida, retorna todas as vendas
             $filtroRelatorio = Vendas::get();
         }
 

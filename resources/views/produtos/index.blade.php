@@ -13,6 +13,49 @@
 
     <section class="content">
         <div class="card-body" >
+            @if($produtosEsgotando->isNotEmpty())
+                <!-- Modal -->
+                <div class="modal fade" id="alertaEstoqueBaixoModal" style="" tabindex="-1" aria-labelledby="alertaEstoqueBaixoLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content ">
+                            <div class="modal-header"  style="background-color: red; color:white; text-transform: uppercase; text-align: center; justify-content: center">
+                                <h5 class="modal-title" id="alertaEstoqueBaixoLabel">Alerta de Estoque Baixo</h5>
+                            </div>
+                            <div class="modal-body">
+                                <ul>
+                                    @foreach($produtosEsgotando as $produto)
+                                    <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> {{ $produto->nome }} - Tem somente <b>{{ $produto->qtd_estoque }}</b> un restante(s)<br>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @if($produtosEsgotando->isNotEmpty())
+                <!-- Modal -->
+                <div class="modal fade" id="alertaEstoqueBaixoModal" tabindex="-1" aria-labelledby="alertaEstoqueBaixoLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="alertaEstoqueBaixoLabel">Alerta: Produtos com Estoque Baixo</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Os seguintes produtos estão com o estoque baixo:</p>
+                                <ul>
+                                    @foreach($produtosEsgotando as $produto)
+                                        <li>{{ $produto->nome }} - Apenas {{ $produto->qtd_estoque }} unidade(s) restante(s)</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="closeModalBtn">Fechar via JavaScript</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
             <div class="col-lg-12" style="text-align: right;">
                 <a href="{{ route('produtos.create') }}" class="btn btn-md btn-primary">
                     Cadastrar Produtos
@@ -20,6 +63,11 @@
                 <a href="{{ route('produtos.export_pdf') }}" class="btn btn-lg btn-warning" title="Download lista de produtos">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </a>
+                @if($produtosEsgotando->isNotEmpty())
+                    <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" title="Baixo Estoque" data-bs-target="#alertaEstoqueBaixoModal">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </button>
+                @endif
             </div>
 
             <br>
@@ -96,5 +144,16 @@
     </section>
 @stop
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jsgrid/dist/jsgrid.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+
+@if($produtosEsgotando->isNotEmpty())
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var alertaEstoqueBaixoModal = new bootstrap.Modal(document.getElementById('alertaEstoqueBaixoModal'));
+            alertaEstoqueBaixoModal.show();
+
+        });
+    </script>
+@endif

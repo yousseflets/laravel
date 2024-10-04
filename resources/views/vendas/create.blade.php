@@ -107,13 +107,38 @@
                         <label for="quantidade">Quantidade</label>
                         <input type="text" class="form-control" id="quantidade" name="quantidade" required>
                     </div>
+                    {{-- <div class="col-md-12 col-sm-6 col-md-6"> --}}
+                        <div class="form-check m-1">
+                            @foreach($metodoPagamento as $metodo)
+                                {{-- <input class="form-check-input" type="radio" id="metodo_pagamento_{{ $metodo->id }}" onclick="alternarParcelados(this)" name="metodo_pagamento_id" value="{{ $metodo->id }}">
+                                <label class="form-check-label" for="metodo_pagamento_{{ $metodo->id }}">{{ $metodo->descricao }}</label><br> --}}
+                                <input type="radio" id="metodo_pagamento_{{ $metodo->id }}" name="metodo_pagamento" value="{{ $metodo->id }}" onclick="alternarParcelados(this)">
+                                <label for="metodo_pagamento_{{ $metodo->id }}">{{ $metodo->descricao }}</label><br>
+                            @endforeach
+                        </div>
 
-                    <div class="col-md-6 col-sm-6 col-md-6">
-                        <div class="form-group">
-                            {{-- <img id="productImageDisplay" src="" alt="Imagem do Produto" style="display: none;"/> --}}
+                    {{-- </div> --}}
+                    <div class="col-md-6 col-sm-6 col-md-3" style="text-align: right;">
+
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-md-3" >
+                        <div class="col-3" id="parceladoOptions" style="display: none;">
+                            <label for="qtd_parcelado">Parcelas</label>
+                            <select id="qtd_parcelado" name="qtd_parcelado"  class="form-control">
+                                <option value="1">À vista</option>
+                                <option value="2">2x</option>
+                                <option value="3">3x</option>
+                                <option value="4">4x</option>
+                                <option value="5">5x</option>
+                                <option value="6">6x</option>
+                                <option value="7">7x</option>
+                                <option value="8">8x</option>
+                                <option value="9">9x</option>
+                                <option value="10">10x</option>
+                            </select><br>
                         </div>
                     </div>
-                    <div class="col-md-6 col-sm-6 col-md-3">
+                    <div class="col-md-6 col-sm-6 col-md-3" style="text-align: right;">
                         <div class="info-box mb-3" style="text-align: center;">
                             <span class="info-box-icon bg-success elevation-2"><i class="fas fa-dollar-sign"> </i></span>
                             <div class="info-box-content">
@@ -197,7 +222,7 @@
 
 
 
-    $(document).ready(function() {
+        $(document).ready(function() {
             $('#fornecedor').on('change', function() {
                 var fornecedorId = $(this).val();
                 console.log('Fornecedor ID:', fornecedorId);
@@ -239,5 +264,21 @@
                 }
             });
         });
+          // Função para mostrar/esconder o dropdown de parcelamento
+        function alternarParcelados(checkbox) {
+            const installmentDiv = document.getElementById('parceladoOptions');
+            // Se o checkbox do Cartão de Crédito (ID 2) for selecionado, exibe o dropdown de parcelamento
+            if (checkbox.value == 2 && checkbox.checked) {
+                installmentDiv.style.display = 'block';
+            } else {
+                installmentDiv.style.display = 'none';
+            }
+
+            // Desmarcar todos os outros checkboxes
+            const checkboxes = document.querySelectorAll('input[name="metodo_pagamento"]');
+            checkboxes.forEach((item) => {
+                if (item !== checkbox) item.checked = false;
+            });
+        }
 
 </script>

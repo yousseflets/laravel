@@ -34,11 +34,11 @@
                     </div>
                     <div class="col-4 mt-2">
                         <label for="preco_custo">Valor Custo</label>
-                        <input type="text" class="form-control" id="preco_custo" name="preco_custo" value="{{ $produtos->preco_custo }}" required>
+                        <input type="text" class="form-control" id="preco_custo" name="preco_custo" value="{{ \App\Helpers\TextoHelper::numeroComVirgula($produtos->preco_custo,2) }}" required>
                     </div>
                     <div class="col-4 mt-2">
                         <label for="preco">Preço</label>
-                        <input type="text" class="form-control" id="preco" name="preco" value="{{ $produtos->preco }}" required>
+                        <input type="text" class="form-control" id="preco" name="preco" value="{{ \App\Helpers\TextoHelper::numeroComVirgula($produtos->preco,2) }}" required>
                     </div>
                     <div class="col-4 mt-2">
                         <label for="qtd_estoque">Quantidade em Estoque</label>

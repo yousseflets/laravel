@@ -69,8 +69,10 @@ img {
                         <th>Quantidade</th>
                         <th>Desconto</th>
                         <th>Total</th>
-                        <th>Lucro da Venda</th>
+                        <th>Lucro</th>
                         <th>Data</th>
+                        <th>Pagamento</th>
+                        <th>Parcelado</th>
                         <th>Vendedor</th>
                         <th>Status</th>
                         <th>Ações</th>
@@ -91,6 +93,8 @@ img {
                         <td>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($v->total,  2) }}</td>
                         <td>R$ {{ \App\Helpers\TextoHelper::numeroComVirgula($v->lucro_venda,  2)}}</td>
                         <td>{{ \App\Helpers\DataHelper::showDate($v->data_venda) }}</td>
+                        <td>{{ $v->metodoPagamento->descricao }}</td>
+                        <td>{{ $v->parcelado == 1 ? 'Sim' : 'Não' }}</td>
                         <td>{{ $v->user->name }}</td>
                         <td>{{ $v->status == 1 ? 'Realizada' : 'Cancelada' }}</td>
                         <td>

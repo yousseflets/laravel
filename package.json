@@ -33,6 +33,7 @@
         "datatables.net-dt": "^2.1.7",
         "jquery": "^3.7.1",
         "jquery-mask-plugin": "^1.14.16",
-        "jsgrid": "^1.5.3"
+        "jsgrid": "^1.5.3",
+        "sweetalert2": "^11.14.1"
     }
 }

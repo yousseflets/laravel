@@ -23,8 +23,10 @@ class ProdutosController extends Controller
         $produtos = Produtos::paginate(5);
         $fornecedores = Fornecedores::all();
         $categorias = Categorias::all();
+        $produtosEsgotando = Produtos::whereColumn('qtd_estoque', '<=', 'alerta_estoque')->get();
 
-        return view('produtos.index', compact('produtos','fornecedores', 'categorias'));
+
+        return view('produtos.index', compact('produtos','fornecedores', 'categorias', 'produtosEsgotando'));
     }
 
     public function create (){
@@ -39,16 +41,16 @@ class ProdutosController extends Controller
     public function store (Request $request){
 
         $imagePath = null;
-        // dd($request->hasFile('image'));
+        $preco = str_replace(',', '.', str_replace('.', '', $request->input('preco')));
+        $precoCusto = str_replace(',', '.', str_replace('.', '', $request->input('preco_custo')));
         if ($request->hasFile('image')) {
-            // Pega o arquivo e armazena na pasta 'products'
             $imagePath = $request->file('image')->store('produtos', 'public');
             Produtos::create([
                 'fornecedor_id' => $request->fornecedor_id,
                 'categoria_id' => $request->categoria_id,
                 'nome' => $request->nome,
-                'preco' => $request->preco,
-                'preco_custo' => $request->preco_custo,
+                'preco' => $preco,
+                'preco_custo' => $precoCusto,
                 'image' => $imagePath,
                 'qtd_estoque' => $request->qtd_estoque,
             ]);
@@ -72,8 +74,6 @@ class ProdutosController extends Controller
     public function update(Request $request, $id)
     {
       $produtos = Produtos::find($id);
-      $produtos->fill($request->all());
-      $produtos->save();
 
       if ($request->hasFile('image')) {
         if ($produtos->image) {
@@ -85,16 +85,17 @@ class ProdutosController extends Controller
         $produtos->image = $imagePath;
     }
 
-    // Atualizar os outros campos
-    $produtos->fornecedor_id = $request->input('fornecedor_id');
-    $produtos->categoria_id = $request->input('categoria_id');
-    $produtos->nome = $request->input('nome');
-    $produtos->preco = $request->input('preco');
-    $produtos->preco_custo = $request->input('preco_custo');
-    $produtos->qtd_estoque = $request->input('qtd_estoque');
+    $preco = str_replace(',', '.', trim($request->input('preco')));
+    $precoCusto = str_replace(',', '.', trim($request->input('preco_custo')));
 
-    // Salvar as mudanças no banco de dados
-    $produtos->save();
+    $produtos->update([
+        'fornecedor_id' => $request->input('fornecedor_id'),
+        'categoria_id' => $request->input('categoria_id'),
+        'nome' => $request->input('nome'),
+        'preco' => $preco,
+        'preco_custo' => $precoCusto,
+        'qtd_estoque' => $request->input('qtd_estoque'),
+    ]);
 
 
       return redirect()->route('produtos.index')->with('success', 'Produto editado com sucesso.');
@@ -120,22 +121,17 @@ class ProdutosController extends Controller
 
     public function exportPDF()
     {
-        // Obtém todos os produtos
         $produtos = Produtos::all();
 
-        // Carrega a view e passa os dados dos produtos
         $pdf = FacadePdf::loadView('produtos.pdf', compact('produtos'));
 
-        // Retorna o download do arquivo PDF
         return $pdf->download('produtos.pdf');
     }
 
     public function getProductsBySupplier($fornecedorId)
     {
-        // Buscar todos os produtos relacionados ao fornecedor
         $produtos = Produtos::where('fornecedor_id', $fornecedorId)->get();
 
-        // Retornar os produtos em formato JSON
         return response()->json($produtos);
     }
 }
